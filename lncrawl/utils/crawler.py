@@ -22,7 +22,7 @@ class Crawler:
         self._destroyed = False
         self.executor = futures.ThreadPoolExecutor(max_workers=3)
 
-        # Initialize cloudscrapper 
+        # Initialize cloudscrapper
         try:
             self.scraper = cloudscraper.create_scraper(
                 browser={
@@ -253,7 +253,7 @@ class Crawler:
             return div
         # end if
         div.attrs = {}
-        for tag in div.findAll(True):
+        for tag in div.find_all(True):
             if isinstance(tag, Comment):
                 tag.extract()   # Remove comments
             elif tag.name == 'br':

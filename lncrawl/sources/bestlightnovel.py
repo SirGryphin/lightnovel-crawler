@@ -4,9 +4,10 @@ import re
 from bs4 import BeautifulSoup
 from ..utils.crawler import Crawler
 
-logger = logging.getLogger('NOVEL_ONLINE_FREE')
+logger = logging.getLogger(__name__)
 search_url = 'https://bestlightnovel.com/getsearchstory'
 novel_page_url = 'https://bestlightnovel.com/novel_%s'
+change_bad_words_off = 'https://bestlightnovel.com/change_bad_words_off'
 
 
 class BestLightNovel(Crawler):
@@ -61,6 +62,8 @@ class BestLightNovel(Crawler):
                 'url': self.absolute_url(a['href']),
             })
         # end for
+
+        self.get_response(change_bad_words_off)
     # end def
 
     def download_chapter_body(self, chapter):

@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 
 from ..utils.crawler import Crawler
 
-logger = logging.getLogger('LIGHT_NOVEL_ONLINE')
+logger = logging.getLogger(__name__)
 search_url = 'https://light-novel.online/search.ajax?query=%s'
 novel_page_url = 'https://light-novel.online/%s?page=%d'
 
@@ -39,7 +39,7 @@ class LightNovelOnline(Crawler):
         logger.debug('Visiting %s', self.novel_url)
         soup = self.get_soup(self.novel_url)
 
-        self.novel_id = urlparse(self.novel_url).path.split('/')[1]
+        self.novel_id = urlparse(self.novel_url).path.split('/')[-1]
         logger.info("Novel Id: %s", self.novel_id)
 
         self.novel_title = soup.select_one(
@@ -108,7 +108,8 @@ class LightNovelOnline(Crawler):
         '''Download body of a single chapter and return as clean html format.'''
         logger.info('Downloading %s', chapter['url'])
         soup = self.get_soup(chapter['url'])
-        body = soup.select('#chapter-content p')
-        return ''.join([str(p) for p in body if p.text.strip()])
+        body = soup.select_one('#chapter-content')
+        return str(body)
+        # return ''.join([str(p) for p in body if p.text.strip()])
     # end def
 # end class
